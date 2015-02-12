@@ -1,0 +1,27 @@
+﻿*{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}
+html{-ms-touch-action:none;min-height:100%;}
+body{margin:0;padding:0;font:14px "Lucida Grande","微软雅黑",Helvetica,Arial,sans-serif;color:#333;}
+input:-webkit-autofill{
+    -webkit-box-shadow: 0 0 0 1000px white inset!important;
+}
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0px 1000px white inset!important;
+}
+body.bg-img{min-height:100%;background-image: url(../images/bg.jpg);background-size: cover;background-position: center;background-repeat: no-repeat;}
+body.bg-img:before{position:absolute;z-index: -1;top:0;content: "";height: 100%;width: 100%;background-color: rgba(255,255,255,.7);}
+.form-horizontal.form-login .checkbox{padding-top:0px;}
+.text-white{color:#fff;}
+.text-white:hover,
+.text-white:focus{color:#eee;}
+#uploadbtn{margin-top:0;}
+.navbar.ebei-navbar-white{background:#fff;background-color:#fff;color:#009587;}
+.ebei-navbar-white .navbar-brand{line-height:24px;font-size:24px;}
+.form-group{margin-bottom:25px;}
+.form-control-wrapper .form-control:not(.empty)~.floating-label{top:-15px;}
+.navbar-collapse.in:root .navbar-header>.navbar-toggle{display:none;}
+#ebei-navbar-toggle .icon-bar{-webkit-transition:all .4s;-moz-transition:all .4s;-ms-transition:all .4s;-o-transition:all .4s;transition:all .4s;}
+#ebei-navbar-toggle.ebei-navbar-close span:last-child{opacity:1;-webkit-transform:translateY(-6px) rotate(45deg);-ms-transform:translateY(-6px) rotate(45deg);-o-transform:translateY(-6px) rotate(45deg);transform:translateY(-6px) rotate(45deg);}
+#ebei-navbar-toggle.ebei-navbar-close span:nth-last-child(3){opacity:1;-webkit-transform:translateY(6px)rotate(-45deg);-ms-transform:translateY(6px)rotate(-45deg);-o-transform:translateY(6px)rotate(-45deg);transform:translateY(6px)rotate(-45deg);}
+#ebei-navbar-toggle.ebei-navbar-close span:nth-last-child(2){opacity:0;}
