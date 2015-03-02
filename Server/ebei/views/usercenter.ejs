@@ -52,11 +52,11 @@
 					}
 				},
 				request: {
-					endpoint: 'http://192.168.56.30:8001/uploads'
+					endpoint: '/usercenter'
 				},
 				deleteFile: {
 					enabled: true,
-					endpoint: 'http://192.168.56.30:8001/uploads'
+					endpoint: '/usercenter'
 				},
 				retry: {
 					enableAuto: true
@@ -69,11 +69,11 @@
 		</script>
 		<script type="text/template" id="qq-template">
 		<div class="qq-uploader-selector qq-uploader">
-			<div class="qq-upload-drop-area-selector qq-upload-drop-area" qq-hide-dropzone>
-				<span>Drop files here to upload</span>
+			<div class="qq-upload-drop-area-selector qq-upload-drop-area well" qq-hide-dropzone>
+				<span>拖拽图片到这里上传</span>
 			</div>
-			<div class="qq-upload-button-selector qq-upload-button">
-				<div>Upload a file</div>
+			<div class="qq-upload-button-selector qq-upload-button btn btn-primary btn-flat btn-raised">
+				<div>点击选择或拖拽图片到这里上传</div>
 			</div>
 			<span class="qq-drop-processing-selector qq-drop-processing">
 			<span>Processing dropped files...</span>

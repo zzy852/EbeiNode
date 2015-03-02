@@ -25,3 +25,6 @@ body.bg-img:before{position:absolute;z-index: -1;top:0;content: "";height: 100%;
 #ebei-navbar-toggle.ebei-navbar-close span:last-child{opacity:1;-webkit-transform:translateY(-6px) rotate(45deg);-ms-transform:translateY(-6px) rotate(45deg);-o-transform:translateY(-6px) rotate(45deg);transform:translateY(-6px) rotate(45deg);}
 #ebei-navbar-toggle.ebei-navbar-close span:nth-last-child(3){opacity:1;-webkit-transform:translateY(6px)rotate(-45deg);-ms-transform:translateY(6px)rotate(-45deg);-o-transform:translateY(6px)rotate(-45deg);transform:translateY(6px)rotate(-45deg);}
 #ebei-navbar-toggle.ebei-navbar-close span:nth-last-child(2){opacity:0;}
+.qq-upload-button{width:100%;}
+.qq-upload-drop-area.well{background-color: #fff;}
+.qq-upload-drop-area.well span{margin-top:-10px;color:#009587;}

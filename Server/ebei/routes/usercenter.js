@@ -32,10 +32,7 @@ router.post('/', function(req, res) {
   form.parse(req, function(err, fields, files) {
 
     if (err) {
-      res.locals.error = err;
-      res.render('index', {
-        title: TITLE
-      });
+        res.json({success: false});
       return;
     }
 
@@ -56,10 +53,7 @@ router.post('/', function(req, res) {
     }
 
     if (extName.length === 0) {
-      res.locals.error = '只支持png和jpg格式图片';
-        res.render('usercenter', {
-            title: '用户中心'
-        });
+      res.json({success: false});
       return;
     }
 
@@ -70,10 +64,7 @@ router.post('/', function(req, res) {
     fs.renameSync(files.qqfile.path, newPath); //重命名
   });
 
-  res.locals.success = '上传成功';
-    res.render('usercenter', {
-        title: '用户中心'
-    });
+    res.json({success: true});
 });
 
 module.exports = router;
