@@ -7,7 +7,6 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 
 var routes = require('./routes/index');
-var reg = require('./routes/reg');
 var login = require('./routes/login');
 var logout = require('./routes/logout');
 var usercenter = require('./routes/usercenter');
@@ -33,7 +32,6 @@ app.use(session({ secret: 'Ebei'}));
 
 
 app.use('/', routes);
-app.use('/reg', reg);
 app.use('/login', login);
 app.use('/logout', logout);
 app.use('/usercenter', usercenter);

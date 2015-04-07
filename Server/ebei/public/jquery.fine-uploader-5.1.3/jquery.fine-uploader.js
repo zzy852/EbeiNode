@@ -1653,7 +1653,7 @@ qq.status = {
                         processCanvas(fileContainer);
                     }
                     else {
-                        self.log(fileContainer + " is not a valid file container!  Ignoring!", "warn");
+                        self.log(fileContainer + " 文件内容不可用，正在忽略。", "warn");
                     }
                 });
 
@@ -1690,12 +1690,12 @@ qq.status = {
             }
 
             if (uploadData.status === qq.status.PAUSED) {
-                this.log(qq.format("Paused file ID {} ({}) will be continued.  Not paused.", id, this.getName(id)));
+                this.log(qq.format("暂停的文件 ID {} ({}) 将继续上传.  Not paused.", id, this.getName(id)));
                 this._uploadFile(id);
                 return true;
             }
             else {
-                this.log(qq.format("Ignoring continue for file ID {} ({}).  Not paused.", id, this.getName(id)), "error");
+                this.log(qq.format("忽略继续上传文件 ID {} ({}).  Not paused.", id, this.getName(id)), "error");
             }
 
             return false;
@@ -2512,19 +2512,19 @@ qq.status = {
                 callbackRetVal = details.callback();
 
             if (qq.isGenericPromise(callbackRetVal)) {
-                this.log(details.name + " - waiting for " + details.name + " promise to be fulfilled for " + details.identifier);
+                this.log(details.name + " - 等待 " + details.name + " 保证实现 " + details.identifier);
                 return callbackRetVal.then(
                     function(successParam) {
-                        self.log(details.name + " promise success for " + details.identifier);
+                        self.log(details.name + " 保证成功 " + details.identifier);
                         details.onSuccess(successParam);
                     },
                     function() {
                         if (details.onFailure) {
-                            self.log(details.name + " promise failure for " + details.identifier);
+                            self.log(details.name + " 保证失败 " + details.identifier);
                             details.onFailure();
                         }
                         else {
-                            self.log(details.name + " promise failure for " + details.identifier);
+                            self.log(details.name + " 保证失败 " + details.identifier);
                         }
                     });
             }
@@ -2534,11 +2534,11 @@ qq.status = {
             }
             else {
                 if (details.onFailure) {
-                    this.log(details.name + " - return value was 'false' for " + details.identifier + ".  Invoking failure callback.");
+                    this.log(details.name + " - 返回值是 'false' for" + details.identifier + ".  回调错误.");
                     details.onFailure();
                 }
                 else {
-                    this.log(details.name + " - return value was 'false' for " + details.identifier + ".  Will not proceed.");
+                    this.log(details.name + " - 返回值是 'false' for " + details.identifier + ".  将不会通过.");
                 }
             }
 
@@ -2856,7 +2856,7 @@ qq.status = {
                 self._onBeforeAutoRetry(id, name);
 
                 self._retryTimeouts[id] = setTimeout(function() {
-                    self.log("Retrying " + name + "...");
+                    self.log("重试 " + name + "...");
                     self._uploadData.setStatus(id, qq.status.UPLOAD_RETRYING);
 
                     if (callback) {
@@ -2872,7 +2872,7 @@ qq.status = {
         },
 
         _onBeforeAutoRetry: function(id, name) {
-            this.log("Waiting " + this._options.retry.autoAttemptDelay + " seconds before retrying " + name + "...");
+            this.log("等待 " + this._options.retry.autoAttemptDelay + " 秒后 " + name + "...");
         },
 
         //return false if we should not attempt the requested retry
@@ -2881,7 +2881,7 @@ qq.status = {
                 fileName;
 
             if (this._preventRetries[id]) {
-                this.log("Retries are forbidden for id " + id, "warn");
+                this.log("重试被禁止 id " + id, "warn");
                 return false;
             }
             else if (this._handler.isValid(id)) {
@@ -2896,11 +2896,11 @@ qq.status = {
                     return false;
                 }
 
-                this.log("Retrying upload for '" + fileName + "' (id: " + id + ")...");
+                this.log("正在重试上传 '" + fileName + "' (id: " + id + ")...");
                 return true;
             }
             else {
-                this.log("'" + id + "' is not a valid file ID", "error");
+                this.log("'" + id + "' 不是可用的文件ID", "error");
                 return false;
             }
         },
@@ -2950,15 +2950,15 @@ qq.status = {
 
             if (isError) {
                 this._uploadData.setStatus(id, qq.status.DELETE_FAILED);
-                this.log("Delete request for '" + name + "' has failed.", "error");
+                this.log("删除 '" + name + "' 请求失败.", "error");
 
                 // For error reporing, we only have accesss to the response status if this is not
                 // an `XDomainRequest`.
                 if (xhrOrXdr.withCredentials === undefined) {
-                    this._options.callbacks.onError(id, name, "Delete request failed", xhrOrXdr);
+                    this._options.callbacks.onError(id, name, "删除请求失败", xhrOrXdr);
                 }
                 else {
-                    this._options.callbacks.onError(id, name, "Delete request failed with response code " + xhrOrXdr.status, xhrOrXdr);
+                    this._options.callbacks.onError(id, name, "删除请求失败返回代码" + xhrOrXdr.status, xhrOrXdr);
                 }
             }
             else {
@@ -2966,7 +2966,7 @@ qq.status = {
                 this._netUploaded--;
                 this._handler.expunge(id);
                 this._uploadData.setStatus(id, qq.status.DELETED);
-                this.log("Delete request for '" + name + "' has succeeded.");
+                this.log("删除 '" + name + "' 请求成功!");
             }
         },
 
@@ -3426,19 +3426,19 @@ qq.status = {
             },
 
             messages: {
-                typeError: "{file} has an invalid extension. Valid extension(s): {extensions}.",
-                sizeError: "{file} is too large, maximum file size is {sizeLimit}.",
-                minSizeError: "{file} is too small, minimum file size is {minSizeLimit}.",
-                emptyError: "{file} is empty, please select files again without it.",
-                noFilesError: "No files to upload.",
-                tooManyItemsError: "Too many items ({netItems}) would be uploaded.  Item limit is {itemLimit}.",
-                maxHeightImageError: "Image is too tall.",
-                maxWidthImageError: "Image is too wide.",
-                minHeightImageError: "Image is not tall enough.",
-                minWidthImageError: "Image is not wide enough.",
-                retryFailTooManyItems: "Retry failed - you have reached your file limit.",
-                onLeave: "The files are being uploaded, if you leave now the upload will be canceled.",
-                unsupportedBrowserIos8Safari: "Unrecoverable error - this browser does not permit file uploading of any kind due to serious bugs in iOS8 Safari.  Please use iOS8 Chrome until Apple fixes these issues."
+                typeError: "{file} 类型不支持，可用的后缀名: {extensions}。",
+                sizeError: "{file} 太大了, 最大不能超过 {sizeLimit} 哦。",
+                minSizeError: "{file} 太小了，最小不能小于 {minSizeLimit} 哦。",
+                emptyError: "{file} 是空文件，请再试试。",
+                noFilesError: "没有文件上传。",
+                tooManyItemsError: "上传的文件个数太多了({netItems})。 请不要超过{itemLimit}个。",
+                maxHeightImageError: "图片太高了。",
+                maxWidthImageError: "图片太宽了。",
+                minHeightImageError: "图片不够高。",
+                minWidthImageError: "图片不够宽。",
+                retryFailTooManyItems: "重试失败 - 您已经超过了您的文件限制。",
+                onLeave: "文件正在上传，如果您现在离开上传将被取消。",
+                unsupportedBrowserIos8Safari: "错误 - 浏览器不允许文件上传iOS8 Safari. 请使用 iOS8 Chrome until Apple 进行操作."
             },
 
             retry: {
@@ -3489,7 +3489,7 @@ qq.status = {
             },
 
             text: {
-                defaultResponseError: "Upload failure reason unknown",
+                defaultResponseError: "未知原因导致上传失败",
                 sizeSymbols: ["kB", "MB", "GB", "TB", "PB", "EB"]
             },
 
@@ -3566,7 +3566,7 @@ qq.status = {
 
                 defaultQuality: 80,
 
-                failureText: "Failed to scale",
+                failureText: "文件压缩失败",
 
                 includeExif: false,
 
@@ -3702,7 +3702,7 @@ qq.AjaxRequester = function(o) {
     log = options.log;
 
     if (qq.indexOf(options.validMethods, options.method) < 0) {
-        throw new Error("'" + options.method + "' is not a supported method for this type of request!");
+        throw new Error("'" + options.method + "' 是一种不被支持的方法对于这种类型的请求来说！");
     }
 
     // [Simple methods](http://www.w3.org/TR/cors/#simple-method)
@@ -3794,11 +3794,11 @@ qq.AjaxRequester = function(o) {
         dequeue(id);
 
         if (isError) {
-            log(method + " request for " + id + " has failed", "error");
+            log(method + " 请求 " + id + " 失败了", "error");
         }
         else if (!isXdr(xhr) && !isResponseSuccessful(xhr.status)) {
             isError = true;
-            log(method + " request for " + id + " has failed - response code " + xhr.status, "error");
+            log(method + " 请求 " + id + " 失败了 - 返回代码 " + xhr.status, "error");
         }
 
         options.onComplete(id, xhr, isError);
@@ -3863,7 +3863,7 @@ qq.AjaxRequester = function(o) {
 
         setHeaders(id);
 
-        log("Sending " + method + " request for " + id);
+        log("为"+id+"发送 " + method + " 请求。" );
 
         if (payload) {
             xhr.send(payload);
@@ -4178,10 +4178,10 @@ qq.UploadHandlerController = function(o, namespace) {
             var size = options.getSize(id),
                 name = options.getName(id);
 
-            log("All chunks have been uploaded for " + id + " - finalizing....");
+            log(id + "的所有部分都上传完成了....");
             handler.finalizeChunks(id).then(
                 function(response, xhr) {
-                    log("Finalize successful for " + id);
+                    log(id + "完成");
 
                     var normaizedResponse = upload.normalizeResponse(response, true);
 
@@ -4192,7 +4192,7 @@ qq.UploadHandlerController = function(o, namespace) {
                 function(response, xhr) {
                     var normaizedResponse = upload.normalizeResponse(response, false);
 
-                    log("Problem finalizing chunks for file ID " + id + " - " + normaizedResponse.error, "error");
+                    log("文件" + id + "完成时出现问题 - " + normaizedResponse.error, "error");
 
                     if (normaizedResponse.reset) {
                         chunked.reset(id);
@@ -4271,7 +4271,7 @@ qq.UploadHandlerController = function(o, namespace) {
                 handler.uploadChunk(id, chunkIdx, resuming).then(
                     // upload chunk success
                     function success(response, xhr) {
-                        log("Chunked upload request succeeded for " + id + ", chunk " + chunkIdx);
+                        log("Chunked上传请求成功 " + id + ", chunk " + chunkIdx);
 
                         handler.clearCachedChunk(id, chunkIdx);
 
@@ -4279,7 +4279,7 @@ qq.UploadHandlerController = function(o, namespace) {
                             responseToReport = upload.normalizeResponse(response, true),
                             inProgressChunkIdx = qq.indexOf(inProgressChunks, chunkIdx);
 
-                        log(qq.format("Chunk {} for file {} uploaded successfully.", chunkIdx, id));
+                        log(qq.format("文件 {} 的 {} 部分上传成功.", id, chunkIdx));
 
                         chunked.done(id, chunkIdx, responseToReport, xhr);
 
@@ -4299,7 +4299,7 @@ qq.UploadHandlerController = function(o, namespace) {
 
                     // upload chunk failure
                     function failure(response, xhr) {
-                        log("Chunked upload request failed for " + id + ", chunk " + chunkIdx);
+                        log("Chunked上传请求失败" + id + ", chunk " + chunkIdx);
 
                         handler.clearCachedChunk(id, chunkIdx);
 
@@ -4383,7 +4383,7 @@ qq.UploadHandlerController = function(o, namespace) {
             delete connectionManager._openChunks[id];
 
             if (upload.getProxyOrBlob(id) instanceof qq.BlobProxy) {
-                log("Generated blob upload has ended for " + id + ", disposing generated blob.");
+                log("生成二进制文件上传被允许  " + id + ", 正在处理生成的二进制文件。");
                 delete handler._getFileState(id).file;
             }
 
@@ -4466,10 +4466,10 @@ qq.UploadHandlerController = function(o, namespace) {
         send: function(id, name) {
             handler._getFileState(id).loaded = 0;
 
-            log("Sending simple upload request for " + id);
+            log("发送上传请求案例 " + id);
             handler.uploadFile(id).then(
                 function(response, optXhr) {
-                    log("Simple upload request succeeded for " + id);
+                    log("上传请求案例成功 " + id);
 
                     var responseToReport = upload.normalizeResponse(response, true),
                         size = options.getSize(id);
@@ -4480,7 +4480,7 @@ qq.UploadHandlerController = function(o, namespace) {
                 },
 
                 function(response, optXhr) {
-                    log("Simple upload request failed for " + id);
+                    log("上传请求案例失败 " + id);
 
                     var responseToReport = upload.normalizeResponse(response, false);
 
@@ -4494,7 +4494,7 @@ qq.UploadHandlerController = function(o, namespace) {
 
     upload = {
         cancel: function(id) {
-            log("Cancelling " + id);
+            log("正在取消 " + id);
             options.paramsStore.remove(id);
             connectionManager.free(id);
         },
@@ -4559,9 +4559,9 @@ qq.UploadHandlerController = function(o, namespace) {
                 // upload begins and an onUpload callback is invoked.
                 options.onUploadPrep(id);
 
-                log("Attempting to generate a blob on-demand for " + id);
+                log("试图生成一个二进制请求 " + id);
                 blob.create().then(function(generatedBlob) {
-                    log("Generated an on-demand blob for " + id);
+                    log("生成一个二进制请求 " + id);
 
                     // Update record associated with this file by providing the generated Blob
                     handler.updateBlob(id, generatedBlob);
@@ -4583,7 +4583,7 @@ qq.UploadHandlerController = function(o, namespace) {
                         errorResponse.error = errorMessage;
                     }
 
-                    log(qq.format("Failed to generate blob for ID {}.  Error message: {}.", id, errorMessage), "error");
+                    log(qq.format("生成二进制失败 ID {}.  失败信息: {}.", id, errorMessage), "error");
 
                     options.onComplete(id, options.getName(id), qq.extend(errorResponse, preventRetryResponse), null);
                     upload.maybeSendDeferredFiles(id);
@@ -4654,7 +4654,7 @@ qq.UploadHandlerController = function(o, namespace) {
             var name = options.getName(id);
 
             if (!controller.isValid(id)) {
-                throw new qq.Error(id + " is not a valid file ID to upload!");
+                throw new qq.Error(id + " 这个ID无法用于上传!");
             }
 
             options.onUpload(id, name);
@@ -6461,14 +6461,14 @@ qq.FineUploader = function(o, namespace) {
 
         retry: {
             showAutoRetryNote: true,
-            autoRetryNote: "Retrying {retryNum}/{maxAuto}..."
+            autoRetryNote: "正在重试 {retryNum}/{maxAuto}..."
         },
 
         deleteFile: {
             forceConfirm: false,
-            confirmMessage: "Are you sure you want to delete {filename}?",
-            deletingStatusText: "Deleting...",
-            deletingFailedText: "Delete failed"
+            confirmMessage: "您确定要删除 {filename}?",
+            deletingStatusText: "删除中...",
+            deletingFailedText: "删除失败"
 
         },
 
@@ -6916,7 +6916,7 @@ qq.Templating = function(spec) {
 
             /*jshint -W116*/
             if (options.templateIdOrEl == null) {
-                throw new Error("You MUST specify either a template element or ID!");
+                throw new Error("必须指定一个元素模板或ID!");
             }
 
             // Grab the contents of the script tag holding the template.
@@ -6924,15 +6924,15 @@ qq.Templating = function(spec) {
                 scriptEl = document.getElementById(options.templateIdOrEl);
 
                 if (scriptEl === null) {
-                    throw new Error(qq.format("Cannot find template script at ID '{}'!", options.templateIdOrEl));
+                    throw new Error(qq.format("无法找到ID '{}' 的模板脚本!", options.templateIdOrEl));
                 }
 
                 scriptHtml = scriptEl.innerHTML;
             }
             else {
                 if (options.templateIdOrEl.innerHTML === undefined) {
-                    throw new Error("You have specified an invalid value for the template option!  " +
-                        "It must be an ID or an Element.");
+                    throw new Error("您指定了一个错误的值!  " +
+                        "它必须是一个页面元素或ID");
                 }
 
                 scriptHtml = options.templateIdOrEl.innerHTML;
@@ -7005,7 +7005,7 @@ qq.Templating = function(spec) {
             fileListNode = qq(tempTemplateEl).getByClass(selectorClasses.list)[0];
             /*jshint -W116*/
             if (fileListNode == null) {
-                throw new Error("Could not find the file list container in the template!");
+                throw new Error("无法在元素中找到文件列表内容！");
             }
 
             fileListHtml = fileListNode.innerHTML;

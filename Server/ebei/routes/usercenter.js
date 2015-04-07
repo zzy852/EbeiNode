@@ -21,7 +21,7 @@ router.get('/', function(req, res) {
   });
 });
 
-router.post('/', function(req, res) {
+router.post('/upload', function(req, res) {
 
   var form = new formidable.IncomingForm(); //创建上传表单
   form.encoding = 'utf-8'; //设置编辑
