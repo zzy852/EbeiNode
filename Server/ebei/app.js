@@ -14,7 +14,7 @@ var usercenter = require('./routes/usercenter');
 
 var app = express();
 
-// view engine setup
+// 设置view页面引擎
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
@@ -74,6 +74,6 @@ app.use(function(err, req, res, next) {
 
 module.exports = app;
 
-app.listen(8002,function(){
+app.listen(8003,function(){
     console.log("Server Start!");
 });

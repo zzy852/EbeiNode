@@ -87,7 +87,7 @@ var qq = function(element) {
         css: function(styles) {
             /*jshint eqnull: true*/
             if (element.style == null) {
-                throw new qq.Error("Can't apply style to node as it is not on the HTMLElement prototype chain!");
+                throw new qq.Error("无法将其应用于该节点，其不属于html标签的原型链!");
             }
 
             /*jshint -W116*/
@@ -697,7 +697,7 @@ var qq = function(element) {
             };
         }
 
-        throw new Error("first parameter must be a function!");
+        throw new Error("第一个参数必须是一个function!");
     };
 
     /**
@@ -1733,7 +1733,7 @@ qq.status = {
 
                 /* jshint eqeqeq:false,eqnull:true */
                 if (fileOrUrl == null) {
-                    promiseToReturn.failure({container: imgOrCanvas, error: "File or URL not found."});
+                    promiseToReturn.failure({container: imgOrCanvas, error: "文件或url未找到！"});
                 }
                 else {
                     this._imageGenerator.generate(fileOrUrl, imgOrCanvas, options).then(
@@ -1742,13 +1742,13 @@ qq.status = {
                         },
 
                         function failure(container, reason) {
-                            promiseToReturn.failure({container: container, error: reason || "Problem generating thumbnail"});
+                            promiseToReturn.failure({container: container, error: reason || "生成缩略图错误"});
                         }
                     );
                 }
             }
             else {
-                promiseToReturn.failure({container: imgOrCanvas, error: "Missing image generator module"});
+                promiseToReturn.failure({container: imgOrCanvas, error: "缺少图片生成模块"});
             }
 
             return promiseToReturn;
@@ -1848,18 +1848,18 @@ qq.status = {
                     return true;
                 }
                 else {
-                    this.log(qq.format("Unable to pause file ID {} ({}).", id, this.getName(id)), "error");
+                    this.log(qq.format("无法暂停文件 ID {} ({}).", id, this.getName(id)), "error");
                 }
             }
             else {
-                this.log(qq.format("Ignoring pause for file ID {} ({}).  Not in progress.", id, this.getName(id)), "error");
+                this.log(qq.format("忽略暂停文件 ID {} ({}).  Not in progress.", id, this.getName(id)), "error");
             }
 
             return false;
         },
 
         reset: function() {
-            this.log("Resetting uploader...");
+            this.log("重置上传插件...");
 
             this._handler.reset();
             this._storedIds = [];

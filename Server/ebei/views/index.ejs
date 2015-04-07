@@ -1,8 +1,44 @@
 <!DOCTYPE html>
 <html>
 	<% include head %>
-	<body>
+	<body class="bg-img">
 		<% include nav %>
+		<div class="container-fluid container-imges" id="imgWall">
+		</div>
 		<% include foot %>
+		<script type="text/javascript">
+		$(function() {
+			var imgWall = {
+				init: function(){
+					$.ajax({
+						url: 'getindex',
+						type: 'GET',
+						dataType: 'JSON'
+					})
+					.done(function(data) {
+					for (var i = 0; i < data.length; i++) {
+						me._renderEl(data[i]);
+					}
+
+					})
+					.fail(function() {
+						console.log("error");
+					})
+					.always(function() {
+						console.log("complete");
+					});
+					
+				},
+				update: function(){
+
+				},
+				_renderEl: function(imgUrl){
+					var domText = '<div class="img-item"><img src="'+imgUrl+'" alt=""></div>';
+					$("#imgWall").append(domText);
+				}
+			}
+			imgWall.init();
+		});
+		</script>
 	</body>
 </html>

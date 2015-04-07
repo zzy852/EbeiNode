@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html>
      <% include head %>
-     <body class="bg-img">
-          <% include nav %>
+     <body class="bg-img login-bg">
           <div id="container" class="container">
                <div class="row">
-                    <div class="col-xs-12 col-sm-5">
-                         <% if (locals.success) { %>
-                         <div id="alt_sucess" class="alert alert-success">
-                              <%- success %>
-                         </div>
+                <% if (locals.stat == "login") { %>
+                    <div class="col-xs-10 col-sm-6 col-md-4 col-md-offset-4 col-sm-offset-3 col-xs-offset-1 login-form">
                          <% } %>
-                         <% if (locals.error) { %>
+                <% if (locals.stat != "login") { %>
+                    <div class="col-xs-10 col-sm-6 col-md-4 col-md-offset-4 col-sm-offset-3 col-xs-offset-1 login-form hidden-form">
+                         <% } %>
+                         <% if (locals.loginerror) { %>
                          <div id="alt_warning" class="alert alert-warning">
-                              <%= error %>
+                              <%= loginerror %>
                          </div>
                          <% } %>
                          <form class="form-horizontal form-login" method="post">
                               <fieldset>
                                    <legend>欢迎回来</legend>
+                                   <input type="hidden" name="action" value="login">
                                    <div class="form-group">
                                         <div class="col-xs-8">
                                              <input type="email" class="form-control floating-label" name="txtUserName" id="txtUserName" placeholder="账号(Email)" required autofocus>
@@ -31,7 +31,7 @@
                                    </div>
                                    <div class="form-group">
                                         <div class="col-sm-12">
-                                             <div class="checkbox">
+                                             <div class="checkbox login-checkbox">
                                                   <label>
                                                        <input type="checkbox" name="chbRem">自动登录
                                                   </label>
@@ -40,103 +40,237 @@
                                    </div>
                                    <div class="form-group">
                                         <div class="col-sm-12">
-                                             <button type="submit" id="btnSub" class="btn btn-primary btn-flat btn-raised">登录</button>
+                                             <button type="submit" id="btnLogin" class="btn btn-primary btn-flat btn-raised">登录</button>
                                              <span>or</span>
-                                             <a href="/reg" class="btn btn-default btn-flat btn-raised">注册</a>
+                                             <a href="#reg" id="btnGoReg" class="btn btn-default btn-flat btn-raised">注册</a>
                                         </div>
                                    </div>
                               </fieldset>
                          </form>
                     </div>
-                    <div class="col-xs-12 col-sm-7 sns-login">
-                         <fieldset>
-                         <legend>其他方式登录</legend>
-                         <div class="btn btn-flat btn-fab">
-                              <i class="fa fa-qq"></i>
-                         </div>
-                         <div class="btn btn-flat btn-fab">
-                              <i class="fa fa-weibo"></i>
-                         </div>
-                         </fieldset>
-                    </div>
+                <% if (locals.stat == "reg") { %>
+                   <div class="col-xs-10 col-sm-6 col-md-4 col-md-offset-4 col-sm-offset-3 col-xs-offset-1 reg-form">
+                     <% } %>
+                <% if (locals.stat != "reg") { %>
+                   <div class="col-xs-10 col-sm-6 col-md-4 col-md-offset-4 col-sm-offset-3 col-xs-offset-1 reg-form hidden-form">
+                     <% } %>
+                       <% if (locals.regsuccess) { %>
+                       <div id="alt_sucess" class="alert alert-success">
+                           <%- regsuccess %>
+                       </div>
+                       <% } %>
+                       <% if (locals.regerror) { %>
+                       <div id="alt_warning" class="alert alert-warning">
+                           <%= regerror %>
+                       </div>
+                       <% } %>
+                       <form class="form-horizontal form-login" method="post">
+                           <fieldset>
+                               <legend>加入分图</legend>
+                               <input type="hidden" name="action" value="reg">
+                               <div class="form-group">
+                                   <div class="col-xs-8">
+                                       <input type="email" class="form-control floating-label" name="regUserName" id="regUserName" placeholder="账号(Email)" required autofocus>
+                                   </div>
+                               </div>
+                               <div class="form-group">
+                                   <div class="col-xs-8">
+                                       <input type="password" class="form-control floating-label" name="regtxtUserPwd" id="regtxtUserPwd" placeholder="密码" required>
+                                   </div>
+                               </div>
+                               <div class="form-group">
+                                   <div class="col-xs-8">
+                                       <input type="password" class="form-control floating-label" name="regtxtUserPwd2" id="regtxtUserPwd2" placeholder="重复密码" required>
+                                   </div>
+                               </div>
+                               <div class="form-group">
+                                   <div class="col-sm-12">
+                                       <button type="submit" id="btnReg" class="btn btn-primary btn-flat btn-raised">注册</button>
+                                       <span>or</span>
+                                       <a href="#login" id="btnGoLogin" class="btn btn-default btn-flat btn-raised">登录</a>
+                                   </div>
+                               </div>
+                           </fieldset>
+                       </form>
+                   </div>
                </div>
           </div>
           <% include foot %>
           <script type="text/javascript">
           String.prototype.format = function(args) {
-               var result = this;
-               if (arguments.length > 0) {
-                    if (arguments.length == 1 && typeof(args) == "object") {
-                         for (var key in args) {
-                              if (args[key] != undefined) {
-                                   var reg = new RegExp("({" + key + "})", "g");
-                                   result = result.replace(reg, args[key]);
-                              }
-                         }
-                    } else {
-                         for (var i = 0; i < arguments.length; i++) {
-                              if (arguments[i] != undefined) {
-                                   var reg = new RegExp("({)" + i + "(})", "g");
-                                   result = result.replace(reg, arguments[i]);
-                              }
-                         }
-                    }
-               }
-               return result;
+            var result = this;
+            if (arguments.length > 0) {
+              if (arguments.length == 1 && typeof(args) == "object") {
+                for (var key in args) {
+                  if (args[key] != undefined) {
+                    var reg = new RegExp("({" + key + "})", "g");
+                    result = result.replace(reg, args[key]);
+                  }
+                }
+              } else {
+                for (var i = 0; i < arguments.length; i++) {
+                  if (arguments[i] != undefined) {
+                    var reg = new RegExp("({)" + i + "(})", "g");
+                    result = result.replace(reg, arguments[i]);
+                  }
+                }
+              }
+            }
+            return result;
           }
           $(function() {
-               $('#btnSub').on('click', function() {
-                    var $txtUserName = $('#txtUserName'),
-                         txtUserNameVal = $.trim($txtUserName.val()),
-                         $txtUserPwd = $('#txtUserPwd'),
-                         txtUserPwdVal = $.trim($txtUserPwd.val());
-                    $txtUserName.popover({
-                         content: function() {
-                              if ($.trim($(this).val()).length == 0) {
-                                   return '账号不能为空';
-                              } else if (is.email($.trim($(this).val())) == false) {
-                                   return '请填写正确的邮箱(如:server@ebei.net)';
-                              }
-                         },
-                         container: 'body',
-                         placement: 'right',
-                         delay: {
-                              "show": 500,
-                              "hide": 100
-                         },
-                         trigger: 'manual'
-                    });
-                    $txtUserPwd.popover({
-                         content: '密码不能为空',
-                         container: 'body',
-                         placement: 'right',
-                         delay: {
-                              "show": 500,
-                              "hide": 100
-                         },
-                         trigger: 'manual'
-                    });
-                    if (txtUserNameVal.length == 0) {
-                         $txtUserPwd.popover('hide');
-                         $txtUserName.popover('show');
-                         $txtUserName.focus();
-                         return false;
-                    } else if (is.email(txtUserNameVal) == false) {
-                         $txtUserPwd.popover('hide');
-                         $txtUserName.popover('show');
-                         $txtUserName.focus();
-                         return false;
-                    } else if (txtUserPwdVal.length == 0) {
-                         $txtUserName.popover('hide');
-                         $txtUserPwd.popover('show');
-                         $txtUserPwd.focus();
-                         return false;
-                    } else {
-                         $txtUserPwd.popover('hide');
-                         $txtUserName.popover('hide');
-                    }
-                    return true;
-               })
+            $('#btnLogin').on('click', function() {
+              var $txtUserName = $('#txtUserName'),
+                txtUserNameVal = $.trim($txtUserName.val()),
+                $txtUserPwd = $('#txtUserPwd'),
+                txtUserPwdVal = $.trim($txtUserPwd.val());
+              $txtUserName.popover({
+                content: function() {
+                  if ($.trim($(this).val()).length == 0) {
+                    return '账号不能为空';
+                  } else if (is.email($.trim($(this).val())) == false) {
+                    return '请填写正确的邮箱(如:server@ebei.net)';
+                  }
+                },
+                container: 'body',
+                placement: 'right',
+                delay: {
+                  "show": 500,
+                  "hide": 100
+                },
+                trigger: 'manual'
+              });
+              $txtUserPwd.popover({
+                content: '密码不能为空',
+                container: 'body',
+                placement: 'right',
+                delay: {
+                  "show": 500,
+                  "hide": 100
+                },
+                trigger: 'manual'
+              });
+              if (txtUserNameVal.length == 0) {
+                $txtUserPwd.popover('hide');
+                $txtUserName.popover('show');
+                $txtUserName.focus();
+                return false;
+              } else if (is.email(txtUserNameVal) == false) {
+                $txtUserPwd.popover('hide');
+                $txtUserName.popover('show');
+                $txtUserName.focus();
+                return false;
+              } else if (txtUserPwdVal.length == 0) {
+                $txtUserName.popover('hide');
+                $txtUserPwd.popover('show');
+                $txtUserPwd.focus();
+                return false;
+              } else {
+                $txtUserPwd.popover('hide');
+                $txtUserName.popover('hide');
+              }
+              return true;
+            });
+            $('#btnReg').on('click', function() {
+              var $txtUserName = $('#regUserName'),
+                txtUserNameVal = $.trim($txtUserName.val()),
+                $txtUserPwd = $('#regtxtUserPwd'),
+                txtUserPwdVal = $.trim($txtUserPwd.val()),
+                $txtUserRePwd = $('#regtxtUserPwd2'),
+                txtUserRePwdVal = $.trim($txtUserRePwd.val());
+              $txtUserName.popover({
+                content: function() {
+                  if ($.trim($(this).val()).length == 0) {
+                    return '账号不能为空';
+                  } else if (is.email($.trim($(this).val())) == false) {
+                    return '请填写正确的邮箱(如:server@ebei.net)';
+                  }
+                },
+                container: 'body',
+                placement: 'right',
+                delay: {
+                  "show": 500,
+                  "hide": 100
+                },
+                trigger: 'manual'
+              });
+              $txtUserPwd.popover({
+                content: '密码不能为空',
+                container: 'body',
+                placement: 'right',
+                delay: {
+                  "show": 500,
+                  "hide": 100
+                },
+                trigger: 'manual'
+              });
+              $txtUserRePwd.popover({
+                content: function() {
+                  if ($.trim($(this).val()).length == 0) {
+                    return '重复密码不能为空';
+                  } else {
+                    return '两次密码不一致';
+                  }
+                },
+                container: 'body',
+                placement: 'right',
+                delay: {
+                  "show": 500,
+                  "hide": 100
+                },
+                trigger: 'manual'
+              });
+              if (txtUserNameVal.length == 0) {
+                $txtUserPwd.popover('hide');
+                $txtUserRePwd.popover('hide');
+                $txtUserName.popover('show');
+                $txtUserName.focus();
+                return false;
+              } else if (is.email(txtUserNameVal) == false) {
+                $txtUserPwd.popover('hide');
+                $txtUserRePwd.popover('hide');
+                $txtUserName.popover('show');
+                $txtUserName.focus();
+                return false;
+              } else if (txtUserPwdVal.length == 0) {
+                $txtUserRePwd.popover('hide');
+                $txtUserName.popover('hide');
+                $txtUserPwd.popover('show');
+                $txtUserPwd.focus();
+                return false;
+              } else if (txtUserRePwdVal.length == 0) {
+                $txtUserPwd.popover('hide');
+                $txtUserName.popover('hide');
+                $txtUserRePwd.popover('show');
+                $txtUserRePwd.focus();
+                return false;
+              } else if (txtUserPwdVal != txtUserRePwdVal) {
+                $txtUserPwd.popover('hide');
+                $txtUserName.popover('hide');
+                $txtUserRePwd.popover('show');
+                $txtUserRePwd.focus();
+                return false;
+              } else {
+                $txtUserPwd.popover('hide');
+                $txtUserName.popover('hide');
+                $txtUserRePwd.popover('hide');
+              }
+              return true;
+            });
+            $("#btnGoLogin").on('click', function() {
+                $('[role="tooltip"]').popover('hide');
+              $(".reg-form").fadeOut(function(){
+                $(".login-form").fadeIn();
+                $("#txtUserName").focus();
+              });
+            });
+            $("#btnGoReg").on('click', function() {
+                $('[role="tooltip"]').popover('hide');
+              $(".login-form").fadeOut(function(){
+                $(".reg-form").fadeIn();
+                $("#regUserName").focus();
+              });
+            });
           });
           </script>
      </body>

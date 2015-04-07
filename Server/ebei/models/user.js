@@ -10,7 +10,7 @@ var DB_NAME = 'nodesample';
 
 var pool = mysql.createPool({
 	host: 'localhost',
-	user: 'bei',
+	user: 'root',
 	password: '123456'
 });
 
