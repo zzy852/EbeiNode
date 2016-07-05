@@ -11,7 +11,7 @@ var DB_NAME = 'nodesample';
 var pool = mysql.createPool({
 	host: 'localhost',
 	user: 'root',
-	password: '123456'
+	password: ''
 });
 
 pool.on('connection', function(connection) {
