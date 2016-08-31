@@ -1,8 +1,10 @@
-var express = require('express'),
-  router = express.Router(),
-  formidable = require('formidable'),
-  fs = require('fs'),
-  AVATAR_UPLOAD_FOLDER = '/upload/';
+var express, router, formidable,image, fs, AVATAR_UPLOAD_FOLDER;
+express = require('express');
+router = express.Router();
+image = require('../models/images.js');
+formidable = require('formidable');
+fs = require('fs');
+AVATAR_UPLOAD_FOLDER = '/upload/';
 
 router.get('/', function(req, res) {
   if (req.cookies.islogin) {
@@ -16,8 +18,12 @@ router.get('/', function(req, res) {
     res.redirect('/login');
     return;
   }
-  res.render('usercenter', {
-    title: '用户中心'
+  image.getUserImagesByUserName(res.locals.username,function(err,result){
+    res.locals.userid = result[0].userid;
+    res.render('usercenter', {
+      content: result,
+      title: '用户中心'
+    });
   });
 });
 
@@ -56,15 +62,33 @@ router.post('/upload', function(req, res) {
       res.json({success: false});
       return;
     }
-
-    var avatarName = Math.random() + '.' + extName;
+    var newDate = new Date();
+    var avatarName = newDate.getFullYear().toString()+(newDate.getMonth()+1).toString()+newDate.getDate().toString()+newDate.getHours().toString()+newDate.getMinutes().toString()+newDate.getSeconds().toString()+newDate.getMilliseconds().toString()+'_'+ parseInt(Math.random()*10000000) + '.' + extName;
     var newPath = form.uploadDir + avatarName;
 
     console.log(newPath);
     fs.renameSync(files.qqfile.path, newPath); //重命名
+
+      var newImage = new image({
+          uploadUserid: req.query.userId,
+          imageName: files.qqfile.name,
+          imageUrl: AVATAR_UPLOAD_FOLDER + avatarName
+      });
+
+      newImage.save(function(err, result) {
+          if (err) {
+              res.json({success: false});
+              return;
+          }
+
+          if (result.insertId > 0) {
+              res.json({success: true});
+          } else {
+              res.json({success: false});
+          }
+      });
   });
 
-    res.json({success: true});
 });
 
 module.exports = router;

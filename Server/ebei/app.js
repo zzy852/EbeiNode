@@ -5,12 +5,10 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
-
 var routes = require('./routes/index');
 var login = require('./routes/login');
 var logout = require('./routes/logout');
 var usercenter = require('./routes/usercenter');
-
 var app = express();
 
 // 设置view页面引擎
@@ -28,7 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //这里传入了一个密钥加session id
 app.use(cookieParser('Ebei'));
 //使用靠就这个中间件
-app.use(session({ secret: 'Ebei'}));
+app.use(session({resave: false,saveUninitialized: true,secret: 'Ebei'}));
 
 
 app.use('/', routes);

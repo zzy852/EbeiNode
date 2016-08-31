@@ -5,12 +5,13 @@
  * @version 1.0.0
  */
 
-var express = require('express'),
-	router = express.Router(),
-	User = require('../models/user.js'),
-	crypto = require('crypto'),
-	TITLE_LOGIN = '欢迎回来',
-	TITLE_REG = '加入分图';
+var express, router, User, crypto, TITLE_LOGIN, TITLE_REG;
+express = require('express');
+router = express.Router();
+User = require('../models/user.js');
+crypto = require('crypto');
+TITLE_LOGIN = '欢迎回来';
+TITLE_REG = '加入分图';
 
 router.get('/', function(req, res) {
     res.locals.stat = 'login';
@@ -123,7 +124,15 @@ function regist(req, res) {
 			}
 
 			if (result.insertId > 0) {
-				res.locals.regsuccess = '注册成功,请点击   <a class="btn btn-link" href="/login" role="button"> 登录 </a>';
+				res.locals.regsuccess = '注册成功,系统将自动登录或请点击   <a class="btn btn-link" href="/login" role="button"> 登录 </a>';
+				res.cookie('islogin', userName, {
+					maxAge: 60000
+				});
+				res.locals.username = userName;
+				res.locals.userface = results[0].UserFace;
+				res.locals.usernick = results[0].UserNick;
+				req.session.username = res.locals.username;
+				res.redirect('/');
 			} else {
 				res.locals.regerror = err;
 			}

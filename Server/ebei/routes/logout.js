@@ -5,8 +5,9 @@
  * @version 1.0.0
  */
 
-var express = require('express'),
-     router = express.Router();
+var express, router;
+express = require('express');
+router = express.Router();
 
 router.get('/', function(req, res) {
   req.session.destroy();
