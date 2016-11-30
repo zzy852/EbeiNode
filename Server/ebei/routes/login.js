@@ -65,7 +65,6 @@ function login(req, res) {
 			res.render('login', {
 				title: TITLE_LOGIN
 			});
-			console.log(1);
 			return;
 		} else {
 			if (isRem) {
